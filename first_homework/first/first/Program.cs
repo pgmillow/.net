@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-
 class Program
 {
     static void Main()
@@ -20,7 +19,6 @@ class Program
             Console.WriteLine("输入的不是一个有效的整数。");
         }
     }
-
     static List<int> GetPrimeFactors(int number)
     {
         List<int> factors = new List<int>();

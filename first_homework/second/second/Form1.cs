@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 namespace second
 {
     public partial class Form1 : Form
@@ -10,53 +9,44 @@ namespace second
         private int score = 0;
         private int totalQuestions = 5;
         private int currentQuestion = 0;
-        private int timeLimit = 10; // Ã¿Ìâ10Ãë
+        private int timeLimit = 10; // Ã¿ï¿½ï¿½10ï¿½ï¿½
         private System.Windows.Forms.Timer timer;
-
         public Form1()
         {
             InitializeComponent();
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 1000; // Ã¿Ãë´¥·¢Ò»´Î
+            timer.Interval = 1000; // Ã¿ï¿½ë´¥ï¿½ï¿½Ò»ï¿½ï¿½
             timer.Tick += Timer_Tick;
-            buttonRestart.Click += buttonRestart_Click; // È·±£ÊÂ¼þ´¦Àí³Ì
+            buttonRestart.Click += buttonRestart_Click; // È·ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             StartQuiz();
         }
-
         private void StartQuiz()
         {
-            //¼ì²éµ±Ç°Ïß³ÌÊÇ·ñÊÇ´´½¨¿Ø¼þµÄÏß³Ì
-
             if (InvokeRequired)
             {
                 Invoke(new Action(StartQuiz));
                 return;
             }
-
-
             currentQuestion++;
-            timeLimit = 10; // ÖØÖÃÊ±¼ä
+            timeLimit = 10; // ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
             if (currentQuestion > totalQuestions)
             {
                 EndQuiz();
                 return;
             }
-
-            labelQuestionNumber.Text = $"µÚ {currentQuestion} Ìâ";
+            labelQuestionNumber.Text = $"ï¿½ï¿½ {currentQuestion} ï¿½ï¿½";
             timer.Start();
             GenerateQuestion();
         }
-
         private void GenerateQuestion()
         {
             int a = random.Next(1, 101);
             int b = random.Next(1, 101);
             string operation = random.Next(0, 2) == 0 ? "+" : "-";
-
             labelQuestion.Text = $"{a} {operation} {b} = ?";
-            labelFeedback.Text = "Çë×÷´ð";
+            labelFeedback.Text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             textBoxAnswer.Clear();
-            textBoxAnswer.BackColor = SystemColors.Window; // ÖØÖÃ±³¾°ÑÕÉ«
+            textBoxAnswer.BackColor = SystemColors.Window; // ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½É«
         }
         private async void buttonSubmit_Click(object sender, EventArgs e)
         {
@@ -72,104 +62,69 @@ namespace second
                 {
                     correctAnswer = a - b;
                 }
-
                 if (int.TryParse(textBoxAnswer.Text, out int userAnswer))
                 {
                     if (userAnswer == correctAnswer)
                     {
-                        labelFeedback.Text = "ÕýÈ·£¡";
+                        labelFeedback.Text = "ï¿½ï¿½È·ï¿½ï¿½";
                         labelFeedback.ForeColor = Color.Green;
                         score++;
                     }
                     else
                     {
-                        labelFeedback.Text = $"´íÎó£¡ÕýÈ·´ð°¸ÊÇ {correctAnswer}";
+                        labelFeedback.Text = $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ {correctAnswer}";
                         labelFeedback.ForeColor = Color.Red;
                     }
                 }
                 else
                 {
-                    labelFeedback.Text = "ÇëÊäÈëÓÐÐ§µÄÊý×Ö£¡";
+                    labelFeedback.Text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½";
                     labelFeedback.ForeColor = Color.Red;
                 }
-
                 textBoxAnswer.BackColor = (userAnswer == correctAnswer) ? Color.LightGreen : Color.LightCoral;
                 timer.Stop();
-
-                // Ìí¼ÓÑÓ³ÙÒÔÏÔÊ¾·´À¡
                 await Task.Delay(1000);
                 StartQuiz();
             }
             else
             {
-                labelFeedback.Text = "ÎÊÌâ¸ñÊ½ÎÞÐ§£¡";
+                labelFeedback.Text = "ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Ð§ï¿½ï¿½";
                 labelFeedback.ForeColor = Color.Red;
             }
         }
-
         private void buttonRestart_Click(object sender, EventArgs e)
         {
             score = 0;
             currentQuestion = 0;
-            labelFeedback.Text = "Çë×÷´ð";
+            labelFeedback.Text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             labelQuestion.Text = string.Empty;
             textBoxAnswer.Clear();
             textBoxAnswer.BackColor = SystemColors.Window;
-            buttonSubmit.Text = "Ìá½»";
-            buttonSubmit.Enabled = true; // È·±£°´Å¥¿ÉÓÃ
+            buttonSubmit.Text = "ï¿½á½»";
+            buttonSubmit.Enabled = true; // È·ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½
             StartQuiz();
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
             timeLimit--;
-            labelTime.Text = $"Ê£ÓàÊ±¼ä£º{timeLimit} Ãë";
+            labelTime.Text = $"Ê£ï¿½ï¿½Ê±ï¿½ä£º{timeLimit} ï¿½ï¿½";
             if (timeLimit <= 0)
             {
-                labelFeedback.Text = "³¬Ê±£¡";
+                labelFeedback.Text = "ï¿½ï¿½Ê±ï¿½ï¿½";
                 labelFeedback.ForeColor = Color.Red;
                 timer.Stop();
-
-                // Ìí¼ÓÑÓ³ÙÒÔÏÔÊ¾³¬Ê±·´À¡
                 Task.Delay(1000).ContinueWith(t => StartQuiz());
             }
         }
-
         private void EndQuiz()
         {
             timer.Stop();
-            labelQuestion.Text = $"µÃ·Ö£º{score}/{totalQuestions}";
-            labelFeedback.Text = "¿¼ÊÔ½áÊø£¡";
+            labelQuestion.Text = $"ï¿½Ã·Ö£ï¿½{score}/{totalQuestions}";
+            labelFeedback.Text = "ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ï¿½";
             labelFeedback.ForeColor = Color.Black;
-            buttonRestart.Text = "ÖØÐÂ¿ªÊ¼";
-            labelQuestionNumber.Text = $"¹² {totalQuestions} Ìâ";
-            buttonSubmit.Enabled = false; // ½ûÓÃÌá½»°´Å¥
+            buttonRestart.Text = "ï¿½ï¿½ï¿½Â¿ï¿½Ê¼";
+            labelQuestionNumber.Text = $"ï¿½ï¿½ {totalQuestions} ï¿½ï¿½";
+            buttonSubmit.Enabled = false; // ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½Å¥
         }
-
-
-
-        //private void Form1_Load(object sender, EventArgs e)
-        //{
-        //}
-
-        //private void textBox1_TextChanged(object sender, EventArgs e)
-        //{
-        //}
-
-        //private void label3_Click(object sender, EventArgs e)
-        //{
-        //}
-
-        //private void labelQuestion_Click(object sender, EventArgs e)
-        //{
-        //}
-
-        //private void label1_Click(object sender, EventArgs e)
-        //{
-        //}
-
-        //private void buttonRestart_Click_1(object sender, EventArgs e)
-        //{
-
-        //}
     }
 }
